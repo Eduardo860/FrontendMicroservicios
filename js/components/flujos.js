@@ -270,7 +270,22 @@ function prepararCrearOrden(productId, price) {
   if (subTabBtn) showSubTab('ordenes', 'sub-o-create', subTabBtn);
 
   document.getElementById('o-productid').value = productId;
-  document.getElementById('o-amount').value = price || '';
+  
+  const amountEl = document.getElementById('o-amount');
+  const qtyEl = document.getElementById('o-quantity');
+  
+  if (price) {
+    amountEl.dataset.unitPrice = price;
+    const qty = parseInt(qtyEl.value) || 1;
+    amountEl.value = (parseFloat(price) * qty).toFixed(2);
+  } else {
+    amountEl.value = '';
+    delete amountEl.dataset.unitPrice;
+  }
+  
+  // Set default email if element exists
+  const emailInput = document.getElementById('o-email');
+  if(emailInput) emailInput.value = 'alumno@universidad.edu';
   
   // Hacemos focus en el User ID porque es el único campo manual faltante
   document.getElementById('o-userid').focus();

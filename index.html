@@ -150,7 +150,9 @@
                 <div class="form-grid">
                   <input id="o-userid" type="number" placeholder="User ID" />
                   <input id="o-productid" type="text" placeholder="Product ID" />
+                  <input id="o-quantity" type="number" placeholder="Cantidad" min="1" value="1" />
                   <input id="o-amount" type="number" placeholder="Total Amount" step="0.01" />
+                  <input id="o-email" type="email" placeholder="Customer Email" />
                   <select id="o-status">
                     <option value="PENDIENTE">PENDIENTE</option>
                     <option value="CONFIRMADO">CONFIRMADO</option>
@@ -192,6 +194,7 @@
                     <option value="CONFIRMADO">CONFIRMADO</option>
                     <option value="CANCELADO">CANCELADO</option>
                     <option value="ENTREGADO">ENTREGADO</option>
+                    <option value="PAGADO">PAGADO</option>
                   </select>
                 </div>
                 <button onclick="actualizarEstado()"><i class='bx bx-save'></i> Actualizar Estado</button>
@@ -335,12 +338,26 @@
           </div>
 
           <div class="card">
+            <h2><i class='bx bx-bolt-circle'></i> Trigger Retry — Envío</h2>
+            <p class="hint"><i class='bx bx-info-circle'></i> Publica un mensaje en Kafka (envios_retry_jobs).</p>
+            <div class="form-grid">
+              <input id="br-envio-entityid" type="text" placeholder="Entity ID (ordenId)" />
+              <select id="br-envio-action">
+                <option value="CREATE">CREATE</option>
+              </select>
+            </div>
+            <textarea id="br-envio-data" rows="3" placeholder='{"customerEmail":"test@example.com"}'></textarea>
+            <button onclick="triggerRetry('envio')"><i class='bx bx-send'></i> Enviar a Kafka</button>
+          </div>
+
+          <div class="card">
             <h2><i class='bx bx-list-check'></i> Listar Retry Jobs</h2>
             <p class="hint"><i class='bx bx-info-circle'></i> Jobs almacenados en PostgreSQL.</p>
             <div class="inline-form">
               <button onclick="listarJobs('products')"><i class='bx bx-box'></i> Productos</button>
               <button onclick="listarJobs('orders')"><i class='bx bx-receipt'></i> Órdenes</button>
               <button onclick="listarJobs('payments')"><i class='bx bx-credit-card'></i> Pagos</button>
+              <button onclick="listarJobs('envios')"><i class='bx bx-envelope'></i> Envíos</button>
             </div>
           </div>
 

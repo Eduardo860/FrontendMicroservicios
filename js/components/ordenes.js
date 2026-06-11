@@ -3,18 +3,24 @@ async function crearOrden() {
   const userId = parseInt(document.getElementById('o-userid').value);
   const productId = document.getElementById('o-productid').value.trim();
   const totalAmount = parseFloat(document.getElementById('o-amount').value);
+  const email = document.getElementById('o-email').value.trim();
   const status = document.getElementById('o-status').value;
-  if (isNaN(userId) || !productId || isNaN(totalAmount)) {
-    return show('resp-ordenes', 'Completa todos los campos incluyendo el Product ID.', true);
+  if (isNaN(userId) || !productId || isNaN(totalAmount) || !email) {
+    return show('resp-ordenes', 'Completa todos los campos incluyendo el Product ID y Correo.', true);
   }
-  // Suponiendo cantidad 1 por defecto en este formulario básico, validamos que 1 > 0
-  // Para ser explícitos:
-  const qty = 1;
+  // Leer la cantidad del formulario
+  const qty = parseInt(document.getElementById('o-quantity').value) || 1;
   if (qty <= 0) {
     return show('resp-ordenes', 'La cantidad debe ser mayor a cero.', true);
   }
   show('resp-ordenes', 'Creando orden...');
-  const { ok, data } = await request('POST', '/ordenes', { userId, productId, totalAmount, status });
+  const { ok, data } = await request('POST', '/ordenes', { 
+    userId: userId, 
+    customerEmail: email,
+    totalAmount: totalAmount, 
+    status: status,
+    products: [{ productId: productId, quantity: qty }]
+  });
   show('resp-ordenes', data, !ok);
 }
 
